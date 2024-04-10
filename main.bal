@@ -7,7 +7,7 @@ configurable string token = os:getEnv("packagePAT");
 
 public function main(string language) returns error? {
     check getReposFromGraphql(language);
-    check getReposFromRest(language);
+    // check getReposFromRest(language); // Disabled for now
 }
 
 isolated function getReposFromGraphql(string language) returns error? {
