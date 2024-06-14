@@ -16,5 +16,5 @@ jobs:
                 args:
                   run -- ballerina
               env:
-                packagePAT: ${{ secrets.GITHUB_TOKEN }}
+                packagePAT: ${{ secrets.packagePAT }}
 
