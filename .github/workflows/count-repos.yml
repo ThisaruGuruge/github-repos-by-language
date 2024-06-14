@@ -1,0 +1,20 @@
+name: "Count the Number of Repos"
+
+on: workflow_dispatch
+
+jobs:
+    chckout-repository:
+        name: "Checkout Repository"
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v2
+
+            - name: Ballerina Build
+              uses: ballerina-platform/ballerina-action@master
+              with:
+                args:
+                  run -- ballerina
+              env:
+                packagePAT: ${{ secrets.GITHUB_TOKEN }}
+
