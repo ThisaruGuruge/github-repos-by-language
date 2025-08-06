@@ -1,20 +1,32 @@
 name: "Count the Number of Repos"
 
-on: workflow_dispatch
-
+on:
+  workflow_dispatch:
+    inputs:
+        language:
+            description: "The language of the repositories to count"
+            required: true
+            default: "ballerina"
+        createdBefore:
+            description: "The date before which the repositories were created. Use the format YYYY-MM-DD. If not provided, the current date will be used."
+            required: false
 jobs:
-    chckout-repository:
-        name: "Checkout Repository"
+    count-repos:
+        name: "Count Repositories"
         runs-on: ubuntu-latest
         steps:
             - name: Checkout Repository
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
 
-            - name: Ballerina Build
-              uses: ballerina-platform/ballerina-action@master
+            - uses: ballerina-platform/setup-ballerina@v1
+              name: Install Ballerina
               with:
-                args:
-                  run -- ballerina
+                version: 2201.12.7
+            - name: Retrieve Repository Count
               env:
                 packagePAT: ${{ secrets.packagePAT }}
+                language: ${{ inputs.language }}
+                createdBefore: ${{ inputs.createdBefore }}
+              run: |
+                bal run
 
