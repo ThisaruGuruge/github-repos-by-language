@@ -8,7 +8,16 @@ configurable string language = os:getEnv("language");
 configurable string createdBefore = os:getEnv("createdBefore");
 
 public function main() returns error? {
-    check getReposFromGraphql(language, createdBefore);
+    string query = string `language:${language}`;
+    io:println(string `Counting repos for language: ${language}`);
+
+    if createdBefore != "" {
+        query = string `${query} created:<${createdBefore}`;
+        io:println(string `Filtering repositories created before: ${createdBefore}`);
+    } else {
+        io:println(string `Counting all the repos without any date filter`);
+    }
+    check getReposFromGraphql(query);
 }
 
 const QUERY = string `
@@ -19,18 +28,12 @@ const QUERY = string `
     }
 `;
 
-isolated function getReposFromGraphql(string language, string createdBefore) returns error? {
+isolated function getReposFromGraphql(string query) returns error? {
     graphql:Client github = check new ("https://api.github.com/graphql", {
         auth: {
             token
         }
     });
-
-    string query = string `language:${language}`;
-
-    if createdBefore != "" {
-        query = string `${query} created:<${createdBefore}`;
-    }
 
     map<string> variables = {
         query
