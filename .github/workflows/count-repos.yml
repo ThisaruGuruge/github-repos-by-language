@@ -8,7 +8,7 @@ on:
             required: true
             default: "ballerina"
         createdBefore:
-            description: "The date before which the repositories were created. Use the format YYYY-MM-DD. If not provided, the current date will be used."
+            description: "The date before which the repositories were created. Use the format `YYYY-MM-DD`. If not provided, the current date will be used."
             required: false
 jobs:
     count-repos:
