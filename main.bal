@@ -26,8 +26,14 @@ isolated function getReposFromGraphql(string language, string createdBefore) ret
         }
     });
 
+    string query = string `language:${language}`;
+
+    if createdBefore != "" {
+        query = string `${query} created:<${createdBefore}`;
+    }
+
     map<string> variables = {
-        "query": string `language:${language} created:<${createdBefore}`
+        query
     };
 
     record {
